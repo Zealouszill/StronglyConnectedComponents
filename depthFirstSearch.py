@@ -46,6 +46,22 @@ def depthFirstSearch(gGraph):
         if not visited[v]:
             explore(gGraph, v, visited)
             
+def adjacencyListCreation(passedList):
+
+    
+    
+    
+##############################################################
+#                            Tests                           #
+##############################################################
+    
+    
+    
+    
+    
+def adjacencyListCreation_Tests():
+    
+    assert
             
 if __name__ == "__main__":
     
@@ -58,3 +74,4 @@ if __name__ == "__main__":
     gGraph[4].extend([1,3])
     
     depthFirstSearch(gGraph)
+    
