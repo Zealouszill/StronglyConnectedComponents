@@ -12,10 +12,12 @@ from collections import defaultdict
 visited = {}
 
 def previsit(v):
-    print("Visiting: %s" % v)
+    #print("Visiting: %s" % v)
+    print(v)
 
 def postvisit(v):
-    print("done Visiting: %s" % v)
+    #print("done Visiting: %s" % v)
+    print(v)
 
 def explore(gGraph, vNode, visited):
     """
@@ -34,6 +36,7 @@ def explore(gGraph, vNode, visited):
     for b in gGraph[vNode]:
         if not visited[b]:
             explore(gGraph, b, visited)
+            
     postvisit(vNode)
     
 def depthFirstSearch(gGraph):
@@ -46,9 +49,9 @@ def depthFirstSearch(gGraph):
         if not visited[v]:
             explore(gGraph, v, visited)
             
-def adjacencyListCreation(passedList):
+#def adjacencyListCreation(passedList):
 
-    
+
     
     
 ##############################################################
@@ -56,14 +59,8 @@ def adjacencyListCreation(passedList):
 ##############################################################
     
     
-    
-    
-    
-def adjacencyListCreation_Tests():
-    
-    assert
-            
-if __name__ == "__main__":
+    #if __name__ == "__main__":
+def test_main():
     
     gGraph = defaultdict(list)
     
@@ -74,4 +71,56 @@ if __name__ == "__main__":
     gGraph[4].extend([1,3])
     
     depthFirstSearch(gGraph)
+    
+    assert depthFirstSearch(gGraph) == (0,1,3,2,2,4,4,3,1,0)
+    
+    
+def test_adjacencyListCreation_Tests():
+    
+    testGraph1 = defaultdict(list)
+    testGraph2 = defaultdict(list)
+    testGraph3 = defaultdict(list)
+    
+    testGraph1[0].extend([1,4,5])
+    testGraph1[1].extend([1,2,3])
+    testGraph1[2].extend([4,6])
+    testGraph1[3].extend([1,2,4,6,7])
+    testGraph1[4].extend([2,5,6,7])
+    
+    testGraph2[0].extend([2,5,6])
+    testGraph2[1].extend([1,5,6])
+    testGraph2[2].extend([6,7])
+    testGraph2[3].extend([2,4,5])
+    testGraph2[4].extend([1,3])
+    
+    testGraph3[0].extend([5,6,7])
+    testGraph3[1].extend([1,3,5])
+    testGraph3[2].extend([4,6])
+    testGraph3[3].extend([5,6])
+    testGraph3[4].extend([1,6,7])
+    
+    assert depthFirstSearch(testGraph1) == (1)
+    
+            
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
