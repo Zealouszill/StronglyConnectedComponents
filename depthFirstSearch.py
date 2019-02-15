@@ -12,12 +12,10 @@ from collections import defaultdict
 visited = {}
 
 def previsit(v):
-    #print("Visiting: %s" % v)
-    print(v)
+    print("Visiting: %s" % v)
 
 def postvisit(v):
-    #print("done Visiting: %s" % v)
-    print(v)
+    print("done Visiting: %s" % v)
 
 def explore(gGraph, vNode, visited):
     """
@@ -27,17 +25,26 @@ def explore(gGraph, vNode, visited):
     gGraph: adjacency matrix for undirected graph
     vNode: a node to start exploring from (an index)
     
+    a -> b, c, d
+    
+    b -> a You want to to append a to the end of b
+    c -> a You want to to append a to the end of c
+    d -> a You want to to append a to the end of d
+    
     """
     
     visited[vNode] = True
+    tempList = []
     
     previsit(vNode)
     
     for b in gGraph[vNode]:
         if not visited[b]:
-            explore(gGraph, b, visited)
+            tempList = tempList + explore(gGraph, b, visited)
             
     postvisit(vNode)
+    
+    returnt tempList
     
 def depthFirstSearch(gGraph):
     
@@ -80,10 +87,28 @@ def test_adjacencyListCreation_Tests():
     testGraph1 = defaultdict(list)
     testGraph2 = defaultdict(list)
     testGraph3 = defaultdict(list)
+    testGraph4 = defaultdict(list)
+    testGraph4Expected = defaultdict(list)
+    
+    testGraph4[0].extend([1])    
+    testGraph4[1].extend([2,3,4])
+    testGraph4[2].extend([5])
+    testGraph4[3].extend([])
+    testGraph4[4].extend([1])
+    testGraph4[5].extend([2])
+    
+    assert testGraph4Expect[1] == [0,3,4]
+    assert testGraph4[1] == [2,3,4]
+    
+    
+    assert 
     
     testGraph1[0].extend([1,4,5])
     testGraph1[1].extend([1,2,3])
     testGraph1[2].extend([4,6])
+    
+    
+    
     testGraph1[3].extend([1,2,4,6,7])
     testGraph1[4].extend([2,5,6,7])
     
