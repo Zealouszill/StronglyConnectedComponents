@@ -40,10 +40,10 @@ def explore(gGraph, vNode, visited, invertedGraph):
 
     for nextNode in gGraph[vNode]:
         print("This is nextNode:", nextNode)
+        invertedGraph[nextNode].extend([vNode])
         if not visited[nextNode]:
             invertedGraph = explore(gGraph, nextNode, visited, invertedGraph)
 
-        invertedGraph[nextNode].extend([vNode])
 
 
 
@@ -84,6 +84,9 @@ def depthFirstSearch(gGraph):
     #
     # invertedGraph[1].sort()
     # invertedGraph[2].sort()
+
+    print("")
+    print("")
 
     return invertedGraph
 
@@ -155,6 +158,7 @@ def test_adjacencyListCreation_Tests():
     assert testGraph1Expected[5] == [2]
     assert testGraph1Expected[6] == [4]
     assert testGraph1Expected[7] == [4]
+
 
 
     assert testGraph4Expected[0] == []
