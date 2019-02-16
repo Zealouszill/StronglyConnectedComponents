@@ -6,10 +6,17 @@ Created on Wed Feb  6 10:46:15 2019
 """
 
 from collections import defaultdict
+import timeit
 
 # hold a map from vertex (int) to a boolean indicated if we have
 # visited that node.
 visited = {}
+
+class SearchNode:
+
+    index = 0
+    preClock = 0
+    postClock = 0
 
 def previsit(v):
     print("Visiting: %s" % v)
@@ -32,7 +39,9 @@ def explore(gGraph, vNode, visited, invertedGraph):
     d -> a You want to to append a to the end of d
     
     """
-    
+
+
+
     visited[vNode] = True
     tempList = []
     
@@ -41,12 +50,9 @@ def explore(gGraph, vNode, visited, invertedGraph):
     for nextNode in gGraph[vNode]:
         print("This is nextNode:", nextNode)
         invertedGraph[nextNode].extend([vNode])
+        invertedGraph[nextNode].sort()
         if not visited[nextNode]:
             invertedGraph = explore(gGraph, nextNode, visited, invertedGraph)
-
-
-
-
 
 
     print("This is postvisit 0:", invertedGraph[0])
@@ -91,7 +97,6 @@ def depthFirstSearch(gGraph):
     return invertedGraph
 
             
-#def adjacencyListCreation(passedList):
 
 
     
@@ -100,7 +105,9 @@ def depthFirstSearch(gGraph):
 #                            Tests                           #
 ##############################################################
     
-    
+def test_SearchNodesDFS():
+
+    pass
 
     
 def test_adjacencyListCreation_Tests():
@@ -124,17 +131,23 @@ def test_adjacencyListCreation_Tests():
     testGraph1[6].extend([0])
     testGraph1[7].extend([2])
     
-    # testGraph2[0].extend([2,5,6])
-    # testGraph2[1].extend([1,5,6])
-    # testGraph2[2].extend([6,7])
-    # testGraph2[3].extend([2,4,5])
-    # testGraph2[4].extend([1,3])
-    #
-    # testGraph3[0].extend([5,6,7])
-    # testGraph3[1].extend([1,3,5])
-    # testGraph3[2].extend([4,6])
-    # testGraph3[3].extend([5,6])
-    # testGraph3[4].extend([1,6,7])
+    testGraph2[0].extend([2,5,6])
+    testGraph2[1].extend([5,6])
+    testGraph2[2].extend([6,7])
+    testGraph2[3].extend([2,4,5])
+    testGraph2[4].extend([1,3])
+    testGraph2[5].extend([])
+    testGraph2[6].extend([])
+    testGraph2[7].extend([])
+
+    testGraph3[0].extend([5,6,7])
+    testGraph3[1].extend([1,3,5])
+    testGraph3[2].extend([0,4,6])
+    testGraph3[3].extend([5,6])
+    testGraph3[4].extend([1,2,6,7])
+    testGraph3[5].extend([])
+    testGraph3[6].extend([])
+    testGraph3[7].extend([])
 
     testGraph4[0].extend([1])
     testGraph4[1].extend([2, 3, 4])
@@ -144,11 +157,9 @@ def test_adjacencyListCreation_Tests():
     testGraph4[5].extend([2])
 
     testGraph1Expected = depthFirstSearch(testGraph1)
-    # testGraph2Expected = depthFirstSearch(testGraph2)
-    # testGraph3Expected = depthFirstSearch(testGraph3)
+    testGraph2Expected = depthFirstSearch(testGraph2)
+    testGraph3Expected = depthFirstSearch(testGraph3)
     testGraph4Expected = depthFirstSearch(testGraph4)
-
-
 
     assert testGraph1Expected[0] == [6]
     assert testGraph1Expected[1] == [0]
@@ -159,7 +170,23 @@ def test_adjacencyListCreation_Tests():
     assert testGraph1Expected[6] == [4]
     assert testGraph1Expected[7] == [4]
 
+    assert testGraph2Expected[0] == []
+    assert testGraph2Expected[1] == [4]
+    assert testGraph2Expected[2] == [0, 3]
+    assert testGraph2Expected[3] == [4]
+    assert testGraph2Expected[4] == [3]
+    assert testGraph2Expected[5] == [0, 1, 3]
+    assert testGraph2Expected[6] == [0, 1, 2]
+    assert testGraph2Expected[7] == [2]
 
+    assert testGraph3Expected[0] == [2]
+    assert testGraph3Expected[1] == [1, 4]
+    assert testGraph3Expected[2] == [4]
+    assert testGraph3Expected[3] == [1, ]
+    assert testGraph3Expected[4] == [2]
+    assert testGraph3Expected[5] == [0, 1, 3]
+    assert testGraph3Expected[6] == [0, 2, 3, 4]
+    assert testGraph3Expected[7] == [0, 4]
 
     assert testGraph4Expected[0] == []
     assert testGraph4Expected[1] == [0, 4]
@@ -167,8 +194,6 @@ def test_adjacencyListCreation_Tests():
     assert testGraph4Expected[3] == [1]
     assert testGraph4Expected[4] == [1]
     assert testGraph4Expected[5] == [2]
-
-
 
 
 def test_multipleExtension():
