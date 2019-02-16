@@ -38,16 +38,14 @@ def explore(gGraph, vNode, visited, invertedGraph):
     
     previsit(vNode)
 
-    
-
-    for b in gGraph[vNode]:
-        print("This is b:", b)
-        if not visited[b]:
-            invertedGraph = explore(gGraph, b, visited, invertedGraph)
-            invertedGraph[b].sort()
+    for nextNode in gGraph[vNode]:
+        print("This is nextNode:", nextNode)
+        if not visited[nextNode]:
+            invertedGraph = explore(gGraph, nextNode, visited, invertedGraph)
+            #invertedGraph[b].sort()
 
 
-        invertedGraph[b].extend([vNode])
+        invertedGraph[nextNode].extend([vNode])
 
 
     print("This is postvisit 0:", invertedGraph[0])
@@ -55,11 +53,15 @@ def explore(gGraph, vNode, visited, invertedGraph):
     print("This is postvisit 2:", invertedGraph[2])
     print("This is postvisit 3:", invertedGraph[3])
     print("This is postvisit 4:", invertedGraph[4])
+    print("This is postvisit 5:", invertedGraph[4])
+    print("This is postvisit 6:", invertedGraph[4])
+    print("This is postvisit 7:", invertedGraph[4])
+
 
 
     postvisit(vNode)
 
-    invertedGraph[vNode].sort()
+    #invertedGraph[vNode].sort()
     return invertedGraph
     
 def depthFirstSearch(gGraph):
@@ -73,9 +75,9 @@ def depthFirstSearch(gGraph):
     invertedGraph = defaultdict(list)
 
     # Start at first node and visit all other nodes
-    for v in range(len(gGraph)):
-        if not visited[v]:
-            invertedGraph = explore(gGraph, v, visited, invertedGraph)
+    for nextNode in range(len(gGraph)):
+        if not visited[nextNode]:
+            invertedGraph = explore(gGraph, nextNode, visited, invertedGraph)
 
     print("This is inverted graph:", invertedGraph[0])
 
@@ -96,22 +98,6 @@ def depthFirstSearch(gGraph):
 ##############################################################
     
     
-    #if __name__ == "__main__":
-def main():
-
-    gGraph = defaultdict(list)
-
-    gGraph[0].extend([1,2])
-    gGraph[1].extend([0,3,4])
-    gGraph[2].extend([0,3])
-    gGraph[3].extend([1,2,4])
-    gGraph[4].extend([1,3])
-
-    depthFirstSearch(gGraph)
-
-
-
-    assert depthFirstSearch(gGraph) == (0,1,3,2,2,4,4,3,1,0)
 
     
 def test_adjacencyListCreation_Tests():
@@ -121,33 +107,26 @@ def test_adjacencyListCreation_Tests():
     testGraph3 = defaultdict(list)
     testGraph4 = defaultdict(list)
 
+    testGraph1Expected = defaultdict(list)
+    testGraph2Expected = defaultdict(list)
+    testGraph3Expected = defaultdict(list)
     testGraph4Expected = defaultdict(list)
 
-    testGraph4[0].extend([1])
-    testGraph4[1].extend([2,3,4])
-    testGraph4[2].extend([5])
-    testGraph4[3].extend([])
-    testGraph4[4].extend([1])
-    testGraph4[5].extend([2])
 
-    testGraph4Expected = depthFirstSearch(testGraph4)
 
-    assert testGraph4Expected[0] == []
-    assert testGraph4Expected[1] == [0, 4]
-    assert testGraph4Expected[2] == [1, 5]
-    assert testGraph4Expected[3] == [1]
-    assert testGraph4Expected[4] == [1]
-    assert testGraph4Expected[5] == [2]
+
+
+
 
     
-    testGraph1[0].extend([1,4,5])
-    testGraph1[1].extend([1,2,3])
-    testGraph1[2].extend([4,6])
-
-
-
-    testGraph1[3].extend([1,2,4,6,7])
-    testGraph1[4].extend([2,5,6,7])
+    testGraph1[0].extend([1,4])
+    testGraph1[1].extend([3])
+    testGraph1[2].extend([5])
+    testGraph1[3].extend([])
+    testGraph1[4].extend([6,7])
+    testGraph1[5].extend([])
+    testGraph1[6].extend([0])
+    testGraph1[7].extend([2])
     
     testGraph2[0].extend([2,5,6])
     testGraph2[1].extend([1,5,6])
@@ -160,8 +139,38 @@ def test_adjacencyListCreation_Tests():
     testGraph3[2].extend([4,6])
     testGraph3[3].extend([5,6])
     testGraph3[4].extend([1,6,7])
-    
-    #assert depthFirstSearch(testGraph1) == (1)
+
+    testGraph4[0].extend([1])
+    testGraph4[1].extend([2, 3, 4])
+    testGraph4[2].extend([5])
+    testGraph4[3].extend([])
+    testGraph4[4].extend([1])
+    testGraph4[5].extend([2])
+
+    testGraph1Expected = depthFirstSearch(testGraph1)
+    testGraph2Expected = depthFirstSearch(testGraph2)
+    testGraph3Expected = depthFirstSearch(testGraph3)
+    testGraph4Expected = depthFirstSearch(testGraph4)
+
+
+
+    assert testGraph1Expected[0] == [6]
+    assert testGraph1Expected[1] == [0]
+    assert testGraph1Expected[2] == [7]
+    assert testGraph1Expected[3] == [1]
+    assert testGraph1Expected[4] == [0]
+    assert testGraph1Expected[5] == [2]
+    assert testGraph1Expected[6] == [4]
+    assert testGraph1Expected[7] == [4]
+
+
+    assert testGraph4Expected[0] == []
+    assert testGraph4Expected[1] == [0, 4]
+    assert testGraph4Expected[2] == [1, 5]
+    assert testGraph4Expected[3] == [1]
+    assert testGraph4Expected[4] == [1]
+    assert testGraph4Expected[5] == [2]
+
 
 
 
@@ -186,7 +195,25 @@ def test_listAdding():
 
     assert list2 == [1, 2]
 
-    
+
+
+    #if __name__ == "__main__":
+def main():
+
+    gGraph = defaultdict(list)
+
+    gGraph[0].extend([1,2])
+    gGraph[1].extend([0,3,4])
+    gGraph[2].extend([0,3])
+    gGraph[3].extend([1,2,4])
+    gGraph[4].extend([1,3])
+
+    depthFirstSearch(gGraph)
+
+
+
+    assert depthFirstSearch(gGraph) == (0,1,3,2,2,4,4,3,1,0)
+
     
     
     
