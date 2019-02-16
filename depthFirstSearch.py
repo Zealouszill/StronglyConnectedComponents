@@ -42,10 +42,11 @@ def explore(gGraph, vNode, visited, invertedGraph):
         print("This is nextNode:", nextNode)
         if not visited[nextNode]:
             invertedGraph = explore(gGraph, nextNode, visited, invertedGraph)
-            #invertedGraph[b].sort()
-
 
         invertedGraph[nextNode].extend([vNode])
+
+
+
 
 
     print("This is postvisit 0:", invertedGraph[0])
@@ -53,15 +54,14 @@ def explore(gGraph, vNode, visited, invertedGraph):
     print("This is postvisit 2:", invertedGraph[2])
     print("This is postvisit 3:", invertedGraph[3])
     print("This is postvisit 4:", invertedGraph[4])
-    print("This is postvisit 5:", invertedGraph[4])
-    print("This is postvisit 6:", invertedGraph[4])
-    print("This is postvisit 7:", invertedGraph[4])
+    print("This is postvisit 5:", invertedGraph[5])
+    print("This is postvisit 6:", invertedGraph[6])
+    print("This is postvisit 7:", invertedGraph[7])
 
 
 
     postvisit(vNode)
 
-    #invertedGraph[vNode].sort()
     return invertedGraph
     
 def depthFirstSearch(gGraph):
@@ -81,9 +81,9 @@ def depthFirstSearch(gGraph):
 
     print("This is inverted graph:", invertedGraph[0])
 
-
-    invertedGraph[1].sort()
-    invertedGraph[2].sort()
+    #
+    # invertedGraph[1].sort()
+    # invertedGraph[2].sort()
 
     return invertedGraph
 
@@ -112,13 +112,6 @@ def test_adjacencyListCreation_Tests():
     testGraph3Expected = defaultdict(list)
     testGraph4Expected = defaultdict(list)
 
-
-
-
-
-
-
-    
     testGraph1[0].extend([1,4])
     testGraph1[1].extend([3])
     testGraph1[2].extend([5])
@@ -128,17 +121,17 @@ def test_adjacencyListCreation_Tests():
     testGraph1[6].extend([0])
     testGraph1[7].extend([2])
     
-    testGraph2[0].extend([2,5,6])
-    testGraph2[1].extend([1,5,6])
-    testGraph2[2].extend([6,7])
-    testGraph2[3].extend([2,4,5])
-    testGraph2[4].extend([1,3])
-    
-    testGraph3[0].extend([5,6,7])
-    testGraph3[1].extend([1,3,5])
-    testGraph3[2].extend([4,6])
-    testGraph3[3].extend([5,6])
-    testGraph3[4].extend([1,6,7])
+    # testGraph2[0].extend([2,5,6])
+    # testGraph2[1].extend([1,5,6])
+    # testGraph2[2].extend([6,7])
+    # testGraph2[3].extend([2,4,5])
+    # testGraph2[4].extend([1,3])
+    #
+    # testGraph3[0].extend([5,6,7])
+    # testGraph3[1].extend([1,3,5])
+    # testGraph3[2].extend([4,6])
+    # testGraph3[3].extend([5,6])
+    # testGraph3[4].extend([1,6,7])
 
     testGraph4[0].extend([1])
     testGraph4[1].extend([2, 3, 4])
@@ -148,8 +141,8 @@ def test_adjacencyListCreation_Tests():
     testGraph4[5].extend([2])
 
     testGraph1Expected = depthFirstSearch(testGraph1)
-    testGraph2Expected = depthFirstSearch(testGraph2)
-    testGraph3Expected = depthFirstSearch(testGraph3)
+    # testGraph2Expected = depthFirstSearch(testGraph2)
+    # testGraph3Expected = depthFirstSearch(testGraph3)
     testGraph4Expected = depthFirstSearch(testGraph4)
 
 
