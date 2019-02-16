@@ -6,15 +6,17 @@ Created on Wed Feb  6 10:46:15 2019
 """
 
 from collections import defaultdict
-import timeit
+import time
 
 # hold a map from vertex (int) to a boolean indicated if we have
 # visited that node.
+from typing import Any
+
 visited = {}
 
 class SearchNode:
 
-    index = 0
+    nodeIndex = 0
     preClock = 0
     postClock = 0
 
@@ -24,7 +26,7 @@ def previsit(v):
 def postvisit(v):
     print("done Visiting: %s" % v)
 
-def explore(gGraph, vNode, visited, invertedGraph):
+def explore(gGraph, vNode, visited, invertedGraph, SearchNodeList):
     """
     
     Explore the unexplored vertices of gGraph starting at vNode
@@ -42,9 +44,14 @@ def explore(gGraph, vNode, visited, invertedGraph):
 
 
 
+
     visited[vNode] = True
-    tempList = []
-    
+
+    tempSearhNodeValue = SearchNode
+
+    tempSearhNodeValue.nodeIndex = vNode
+    tempSearhNodeValue.preClock = time.time()
+
     previsit(vNode)
 
     for nextNode in gGraph[vNode]:
@@ -52,23 +59,31 @@ def explore(gGraph, vNode, visited, invertedGraph):
         invertedGraph[nextNode].extend([vNode])
         invertedGraph[nextNode].sort()
         if not visited[nextNode]:
-            invertedGraph = explore(gGraph, nextNode, visited, invertedGraph)
+            invertedGraph, SearchNodeList = explore(gGraph, nextNode, visited, invertedGraph, SearchNodeList)
+
+    tempSearhNodeValue.postClock = time.time()
 
 
-    print("This is postvisit 0:", invertedGraph[0])
-    print("This is postvisit 1:", invertedGraph[1])
-    print("This is postvisit 2:", invertedGraph[2])
-    print("This is postvisit 3:", invertedGraph[3])
-    print("This is postvisit 4:", invertedGraph[4])
-    print("This is postvisit 5:", invertedGraph[5])
-    print("This is postvisit 6:", invertedGraph[6])
-    print("This is postvisit 7:", invertedGraph[7])
+    SearchNodeList[vNode] = tempSearhNodeValue
+
+    print("This is the nodeValue", tempSearhNodeValue.nodeIndex)
+    print("This is the preClock value", tempSearhNodeValue.preClock)
+    print("This is the postClock value", tempSearhNodeValue.postClock)
+
+    # print("This is postvisit 0:", invertedGraph[0])
+    # print("This is postvisit 1:", invertedGraph[1])
+    # print("This is postvisit 2:", invertedGraph[2])
+    # print("This is postvisit 3:", invertedGraph[3])
+    # print("This is postvisit 4:", invertedGraph[4])
+    # print("This is postvisit 5:", invertedGraph[5])
+    # print("This is postvisit 6:", invertedGraph[6])
+    # print("This is postvisit 7:", invertedGraph[7])
 
 
 
     postvisit(vNode)
 
-    return invertedGraph
+    return invertedGraph, SearchNodeList
     
 def depthFirstSearch(gGraph):
 
@@ -78,12 +93,14 @@ def depthFirstSearch(gGraph):
     # Determine the length of the visited catalog.
     visited = [False] * len(gGraph)
 
+    SearchNodeList = defaultdict(list)
+
     invertedGraph = defaultdict(list)
 
     # Start at first node and visit all other nodes
     for nextNode in range(len(gGraph)):
         if not visited[nextNode]:
-            invertedGraph = explore(gGraph, nextNode, visited, invertedGraph)
+            invertedGraph, SearchNodeList = explore(gGraph, nextNode, visited, invertedGraph, SearchNodeList)
 
     print("This is inverted graph:", invertedGraph[0])
 
@@ -94,22 +111,47 @@ def depthFirstSearch(gGraph):
     print("")
     print("")
 
-    return invertedGraph
-
-            
+    return invertedGraph, SearchNodeList
 
 
-    
-    
 ##############################################################
 #                            Tests                           #
 ##############################################################
     
 def test_SearchNodesDFS():
 
-    pass
+    testGraph1 = defaultdict(list)
+    testGraph1Expected = defaultdict(list)
+    testGraph1ExpectedSearchNodeList = defaultdict(list)
 
-    
+    testGraph1[0].extend([1,4])
+    testGraph1[1].extend([3])
+    testGraph1[2].extend([5])
+    testGraph1[3].extend([])
+    testGraph1[4].extend([6,7])
+    testGraph1[5].extend([])
+    testGraph1[6].extend([0])
+    testGraph1[7].extend([2])
+
+    testGraph1Expected, testGraph1ExpectedSearchNodeList = depthFirstSearch(testGraph1)
+
+    assert testGraph1Expected[0] == [6]
+    assert testGraph1Expected[1] == [0]
+    assert testGraph1Expected[2] == [7]
+    assert testGraph1Expected[3] == [1]
+    assert testGraph1Expected[4] == [0]
+    assert testGraph1Expected[5] == [2]
+    assert testGraph1Expected[6] == [4]
+    assert testGraph1Expected[7] == [4]
+
+    assert testGraph1ExpectedSearchNodeList[0].nodeIndex == 5
+    assert testGraph1ExpectedSearchNodeList[1].nodeIndex == 5
+    assert testGraph1ExpectedSearchNodeList[2].nodeIndex == 5
+    assert testGraph1ExpectedSearchNodeList[3].nodeIndex == 5
+    assert testGraph1ExpectedSearchNodeList[4].nodeIndex == 5
+    assert testGraph1ExpectedSearchNodeList[5].nodeIndex == 5
+
+
 def test_adjacencyListCreation_Tests():
     
     testGraph1 = defaultdict(list)
@@ -156,10 +198,10 @@ def test_adjacencyListCreation_Tests():
     testGraph4[4].extend([1])
     testGraph4[5].extend([2])
 
-    testGraph1Expected = depthFirstSearch(testGraph1)
-    testGraph2Expected = depthFirstSearch(testGraph2)
-    testGraph3Expected = depthFirstSearch(testGraph3)
-    testGraph4Expected = depthFirstSearch(testGraph4)
+    testGraph1Expected, testGraph1ExpectedSearchNodeList = depthFirstSearch(testGraph1)
+    testGraph2Expected, testGraph1ExpectedSearchNodeList = depthFirstSearch(testGraph2)
+    testGraph3Expected, testGraph1ExpectedSearchNodeList = depthFirstSearch(testGraph3)
+    testGraph4Expected, testGraph1ExpectedSearchNodeList = depthFirstSearch(testGraph4)
 
     assert testGraph1Expected[0] == [6]
     assert testGraph1Expected[1] == [0]
@@ -218,7 +260,6 @@ def test_listAdding():
     assert list2 == [1, 2]
 
 
-
     #if __name__ == "__main__":
 def main():
 
@@ -231,8 +272,6 @@ def main():
     gGraph[4].extend([1,3])
 
     depthFirstSearch(gGraph)
-
-
 
     assert depthFirstSearch(gGraph) == (0,1,3,2,2,4,4,3,1,0)
 
