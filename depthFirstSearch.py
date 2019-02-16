@@ -47,9 +47,14 @@ def explore(gGraph, vNode, visited, invertedGraph, SearchNodeList):
 
     visited[vNode] = True
 
+    print("Creating SearchNodeValue")
     tempSearhNodeValue = SearchNode
 
+    print("Assigning nodeIndex", vNode)
     tempSearhNodeValue.nodeIndex = vNode
+    print("After assigning nodeIndex we get", tempSearhNodeValue.nodeIndex)
+
+    print("Assigning preClock value", time.time())
     tempSearhNodeValue.preClock = time.time()
 
     previsit(vNode)
@@ -61,14 +66,18 @@ def explore(gGraph, vNode, visited, invertedGraph, SearchNodeList):
         if not visited[nextNode]:
             invertedGraph, SearchNodeList = explore(gGraph, nextNode, visited, invertedGraph, SearchNodeList)
 
+    print("Assigning postClock value", time.time())
     tempSearhNodeValue.postClock = time.time()
 
+    tempSearhNodeValue.nodeIndex = vNode
 
-    SearchNodeList[vNode] = tempSearhNodeValue
 
     print("This is the nodeValue", tempSearhNodeValue.nodeIndex)
     print("This is the preClock value", tempSearhNodeValue.preClock)
     print("This is the postClock value", tempSearhNodeValue.postClock)
+
+    print("")
+    print("")
 
     # print("This is postvisit 0:", invertedGraph[0])
     # print("This is postvisit 1:", invertedGraph[1])
@@ -82,6 +91,11 @@ def explore(gGraph, vNode, visited, invertedGraph, SearchNodeList):
 
 
     postvisit(vNode)
+
+    tempSearhNodeValue.nodeIndex = vNode
+
+    print("Assigning SearchNode to SearchNodeList")
+    SearchNodeList[vNode] = tempSearhNodeValue
 
     return invertedGraph, SearchNodeList
     
@@ -144,12 +158,12 @@ def test_SearchNodesDFS():
     assert testGraph1Expected[6] == [4]
     assert testGraph1Expected[7] == [4]
 
-    assert testGraph1ExpectedSearchNodeList[0].nodeIndex == 5
-    assert testGraph1ExpectedSearchNodeList[1].nodeIndex == 5
-    assert testGraph1ExpectedSearchNodeList[2].nodeIndex == 5
-    assert testGraph1ExpectedSearchNodeList[3].nodeIndex == 5
-    assert testGraph1ExpectedSearchNodeList[4].nodeIndex == 5
-    assert testGraph1ExpectedSearchNodeList[5].nodeIndex == 5
+    assert testGraph1ExpectedSearchNodeList[0].nodeIndex == 0
+    assert testGraph1ExpectedSearchNodeList[1].nodeIndex == 0
+    assert testGraph1ExpectedSearchNodeList[2].nodeIndex == 0
+    assert testGraph1ExpectedSearchNodeList[3].nodeIndex == 0
+    assert testGraph1ExpectedSearchNodeList[4].nodeIndex == 0
+    assert testGraph1ExpectedSearchNodeList[5].nodeIndex == 0
 
 
 def test_adjacencyListCreation_Tests():
